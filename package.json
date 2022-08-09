@@ -15,7 +15,7 @@
     "create-dbs": "npm run create-db:local && npm run create-db:test",
     "setup-db": "psql -f ./sql/setup.sql",
     "setup-db:local": "env-cmd npm run setup-db",
-    "setup-db:heroku": "heroku run npm run setup-db"
+    "setup-db:heroku": "heroku pg:psql -f ./sql/setup.sql"
   },
   "jest": {
     "testEnvironment": "node"

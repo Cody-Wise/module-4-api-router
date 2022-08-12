@@ -1,16 +1,21 @@
 {
-  "name": "backend-express-template",
+  "name": "adv-fs-express-demo",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
-    "test": "jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config --passWithNoTests",
+    "lint": "eslint --ext js --ext lib",
+    "test": "cross-env DOTENV_CONFIG_PATH=./tests/.env jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config --passWithNoTests",
     "test:watch": "npm run test -- --watch",
     "start": "node -r dotenv/config server.js",
-    "start:watch": "nodemon -r dotenv/config server.js",
-    "setup-db": "node -r dotenv/config setup-db.js",
-    "setup-heroku": "heroku run npm run setup-db"
+    "start:watch": "nodemon -i ./tests -r dotenv/config server.js",
+    "create-db:local": "env-cmd createdb",
+    "create-db:test": "env-cmd -f ./tests/.env createdb",
+    "create-dbs": "npm run create-db:local && npm run create-db:test",
+    "setup-db": "psql -f ./sql/setup.sql",
+    "setup-db:local": "env-cmd npm run setup-db",
+    "setup-db:heroku": "heroku pg:psql -f ./sql/setup.sql"
   },
   "jest": {
     "testEnvironment": "node"
@@ -25,9 +30,10 @@
     "@babel/plugin-syntax-class-properties": "^7.12.13",
     "@types/jest": "^28.1.1",
     "@types/pg": "^8.6.5",
+    "cross-env": "^7.0.3",
     "eslint": "^8.17.0",
     "jest": "^28.1.0",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "prettier": "^2.6.2",
     "supertest": "^6.2.3"
   },
@@ -35,10 +41,13 @@
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.1",
+    "heroku": "^7.62.0",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.3"
+    "morgan": "^1.10.0",
+    "pg": "^8.7.3",
+    "twilio": "^3.80.1"
   }
 }
